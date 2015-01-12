@@ -1,5 +1,5 @@
 #Version 1.1
-#Gabriel lefevre
+#Gabriel lefevre & Alexandre Pavy
 
 from kivy.app import App
 from kivy.lang import Builder
