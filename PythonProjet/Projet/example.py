@@ -1,6 +1,8 @@
 #Version 1.1
 #Gabriel lefevre & Alexandre Pavy
 
+#Version dev
+
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.widget import Widget
