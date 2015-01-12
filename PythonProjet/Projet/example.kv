@@ -1,0 +1,38 @@
+
+
+<Panneau>:
+    zone: zoneJeu
+    rows:2
+    cols:1
+    ZoneJeu:
+        id: zoneJeu
+    GeneralOptions:
+        Button:
+            text: 'Start Game'
+            on_press: zoneJeu.test()
+        Button:
+            text: 'Change Color'
+            on_press: zoneJeu.changeColor()
+        Button:
+            text: 'Afficher Chemin'
+            on_press: zoneJeu.drawPath()
+        Label:
+            text: zoneJeu.bestScore
+        Button:
+        	text: 'Afficher graphe'
+            on_press: zoneJeu.affGraph()
+
+<GeneralOptions@GridLayout>:
+    height:"40dp"
+    size_hint_y:None
+    cols:5
+    rows:1
+
+<Case2>:
+    canvas:
+        Color:
+            rgb:self.r,self.g,self.b
+        Rectangle:
+            pos:self.pos
+            size:self.size
+            on_press:test()
