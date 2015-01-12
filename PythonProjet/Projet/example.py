@@ -18,10 +18,6 @@ import networkx as nx
 import math
 
 
-global aleax
-global aleay
-
-
 Builder.load_file("example.kv");
 
 class ZoneJeu(Widget):
@@ -40,9 +36,6 @@ class ZoneJeu(Widget):
     def test(self):
         with self.canvas:
             self.casesPath =[]
-            #nx=16
-            #ny=10
-            #taille=self.size
             self.cases = []
             global aleax
             global aleay
@@ -57,7 +50,7 @@ class ZoneJeu(Widget):
             self.generateGraph()
             #C.r = 0;
     def colorAlea(self):
-        self.colorGrid = (random()/2.0,random()/2.0)
+        self.colorGrid = (random(),random())
     def changeColor(self):
         self.colorAlea()
         for i in self.cases:
@@ -87,7 +80,7 @@ class ZoneJeu(Widget):
          
     def drawPath(self):
         for c in self.path:
-            self.cases[c[0]][c[1]].setColor(1,0,0)
+            self.cases[c[0]][c[1]].setColor(1,1,1)
             
     def affGraph(self):
         nx.draw(self.G)
