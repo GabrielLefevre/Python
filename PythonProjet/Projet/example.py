@@ -1,7 +1,7 @@
-#Version 1.1
+#Version 1.3
 #Gabriel lefevre & Alexandre Pavy
-
-#Version dev
+#TEST conflit
+#Version developpement
 
 from kivy.app import App
 from kivy.lang import Builder
