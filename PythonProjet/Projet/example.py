@@ -1,7 +1,9 @@
-#Version 1.2
-#ajout ligne test
+
+#Version 1.3
 #Gabriel lefevre & Alexandre Pavy
-#test commit conflit
+#TEST conflit
+#Version developpement
+
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.widget import Widget
