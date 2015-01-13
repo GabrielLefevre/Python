@@ -1,4 +1,5 @@
-#Version 1.1
+#Version 1.2
+#ajout ligne test
 #Gabriel lefevre & Alexandre Pavy
 
 from kivy.app import App
