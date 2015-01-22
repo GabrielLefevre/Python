@@ -39,9 +39,6 @@ class ZoneJeu(Widget):
             self.solution = False
             self.casesPath =[]
             self.score="Score : 0"
-            #nx=16
-            #ny=10
-            #taille=self.size
             self.cases = []
             global aleax
             global aleay
@@ -55,7 +52,6 @@ class ZoneJeu(Widget):
                 self.cases.append(tmp)
             self.generateGraph()
             self.getLengthPath()
-            #C.r = 0;
     def colorAlea(self):
         self.colorGrid = (random()/2.0,random()/2.0)
 
@@ -65,8 +61,8 @@ class ZoneJeu(Widget):
             for j in i:
                 j.update(self.colorGrid)
         if (self.solution):
-            self.drawBestPath()
-        self.drawPath()
+            self.affMeilleurChemin()
+        self.affPath()
         
     def getLengthPath(self):
         length=0.0
@@ -79,12 +75,10 @@ class ZoneJeu(Widget):
                 
     def generateGraph(self):
         self.casesPath =[]
-        self.G=nx.Graph()
-        
+        self.G=nx.Graph()       
         for i in range(self.gridSize[0]):#X
             for j in range(self.gridSize[1]):#Y
                 self.G.add_node((i,j))
-                
         for i in range(self.gridSize[0]):#X
             for j in range(self.gridSize[1]):#Y
                 if(i-1>=0):
@@ -98,16 +92,19 @@ class ZoneJeu(Widget):
                     
         self.bestPath=nx.dijkstra_path(self.G,source=(0,self.gridSize[1]-1),target=(self.gridSize[0]-1,0))
         self.bestScore="Best : "+str(int(nx.dijkstra_path_length(self.G,source=(0,self.gridSize[1]-1),target=(self.gridSize[0]-1,0))*2550))
-    def drawBestPath(self):
+    def affMeilleurChemin(self):
         self.solution = True
         for c in self.bestPath:
             self.cases[c[0]][c[1]].setColor(1,0,0)
             
-    def drawPath(self):
+    def affPath(self):
         for c in self.path:
             self.cases[c[0]][c[1]].setColor(0,1,0)
             
-    
+        
+    def affGraph(self):
+        nx.draw(self.G)
+        plt.show()
         
     def addOnPath(self,x,y):
         
@@ -193,7 +190,6 @@ class grapheColor(App):
         
 class Panneau(GridLayout):
     zone = ObjectProperty()
-    #first = ObjectProperty()
     pass
         
 if __name__ == "__main__":
