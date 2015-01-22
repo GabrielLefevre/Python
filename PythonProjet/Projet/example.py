@@ -1,7 +1,3 @@
-#Version 1.2
-#ajout ligne test
-#Gabriel lefevre & Alexandre Pavy
-
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.widget import Widget
@@ -16,6 +12,9 @@ import copy
 import networkx as nx
 import math
 
+global aleax
+global aleay
+
 
 Builder.load_file("example.kv");
 
@@ -23,7 +22,7 @@ class ZoneJeu(Widget):
     G = False
     path = False
     bestScore=ObjectProperty("0")
-    
+    score=ObjectProperty("0")
     gridSize = [18,13]
     def __init__(self,**kwargs):
         super(ZoneJeu,self).__init__(**kwargs)
@@ -31,10 +30,18 @@ class ZoneJeu(Widget):
         self.casesPath =[]
         self.colorGrid = (random(),random()) 
         self.bestScore = "0"
+        self.solution = False
+        self.score="0"
         
     def test(self):
         with self.canvas:
+            self.path=[]
+            self.solution = False
             self.casesPath =[]
+            self.score="Score : 0"
+            #nx=16
+            #ny=10
+            #taille=self.size
             self.cases = []
             global aleax
             global aleay
@@ -47,21 +54,37 @@ class ZoneJeu(Widget):
                     tmp.append(Case2(self.colorGrid,pos=[i*41+30,j*41+50],size=[40,40]))
                 self.cases.append(tmp)
             self.generateGraph()
+            self.getLengthPath()
             #C.r = 0;
     def colorAlea(self):
-        self.colorGrid = (random(),random())
+        self.colorGrid = (random()/2.0,random()/2.0)
+
     def changeColor(self):
         self.colorAlea()
         for i in self.cases:
             for j in i:
-                j.update(self.colorGrid);
+                j.update(self.colorGrid)
+        if (self.solution):
+            self.drawBestPath()
+        self.drawPath()
+        
+    def getLengthPath(self):
+        length=0.0
+        if(len(self.path)<2):
+            return 0;
+        
+        for i in range(1,len(self.path)):
+            length += self.G[self.path[i-1]][self.path[i]]['weight']
+        return int(length*2550)
                 
     def generateGraph(self):
         self.casesPath =[]
         self.G=nx.Graph()
+        
         for i in range(self.gridSize[0]):#X
             for j in range(self.gridSize[1]):#Y
                 self.G.add_node((i,j))
+                
         for i in range(self.gridSize[0]):#X
             for j in range(self.gridSize[1]):#Y
                 if(i-1>=0):
@@ -72,19 +95,63 @@ class ZoneJeu(Widget):
                     self.G.add_edge((i,j),(i,j-1),weight=self.cases[i][j].getWeight(self.cases[i][j-1]))
                 if(j+1<self.gridSize[1]):
                     self.G.add_edge((i,j),(i,j+1),weight=self.cases[i][j].getWeight(self.cases[i][j+1]))
-        self.path=nx.dijkstra_path(self.G,source=(0,self.gridSize[1]-1),target=(self.gridSize[0]-1,0))
-        self.bestScore=str(nx.dijkstra_path_length(self.G,source=(0,self.gridSize[1]-1),target=(self.gridSize[0]-1,0)))
-        #nx.draw(self.G)
-        #plt.show()
-         
+                    
+        self.bestPath=nx.dijkstra_path(self.G,source=(0,self.gridSize[1]-1),target=(self.gridSize[0]-1,0))
+        self.bestScore="Best : "+str(int(nx.dijkstra_path_length(self.G,source=(0,self.gridSize[1]-1),target=(self.gridSize[0]-1,0))*2550))
+    def drawBestPath(self):
+        self.solution = True
+        for c in self.bestPath:
+            self.cases[c[0]][c[1]].setColor(1,0,0)
+            
     def drawPath(self):
         for c in self.path:
-            self.cases[c[0]][c[1]].setColor(1,1,1)
+            self.cases[c[0]][c[1]].setColor(0,1,0)
             
-    def affGraph(self):
-        nx.draw(self.G)
-        plt.show()
+    
         
+    def addOnPath(self,x,y):
+        
+        if((x,y) in self.path):
+            return;
+        
+        if(len(self.path)==0):
+            if(x==0 and y ==self.gridSize[1]-1):
+                self.path.append((x,y));
+                self.cases[x][y].setColor(0,1,0);  
+                return;
+            else:
+                return
+        if(abs(x-self.path[len(self.path)-1][0])+abs(y-self.path[len(self.path)-1][1])>1):
+            return;       
+        
+        self.path.append((x,y));
+        self.cases[x][y].setColor(0,1,0);  
+        self.score="Score : "+str(self.getLengthPath())
+        
+            
+    def clickOnCase(self,x,y):
+        pos=[0,0];
+        pos[0]=int((x-30)/41);
+        pos[1]=int((y-50)/41);
+        if(pos[0]<0):
+            return;
+        if(pos[1]<0):
+            return;
+        if(pos[0]>self.gridSize[0]-1):
+            return;
+        if(pos[1]>self.gridSize[1]-1):
+            return;
+        self.addOnPath(pos[0],pos[1])
+
+                
+                
+    def on_touch_move(self, touch):
+        self.clickOnCase(touch.x,touch.y)
+    def on_touch_down(self, touch):
+        self.clickOnCase(touch.x,touch.y)
+
+            
+
 
 class Case2(Widget):
     r=ObjectProperty(random())
