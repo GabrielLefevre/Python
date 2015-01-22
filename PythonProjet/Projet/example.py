@@ -193,7 +193,7 @@ class Case2(Widget):
     
 
     
-class grapheColor(App):
+class KivyGameAP_GL(App):
     
     def build(self):
         panneau = Panneau()
@@ -204,4 +204,4 @@ class Panneau(GridLayout):
     pass
         
 if __name__ == "__main__":
-    grapheColor().run()
+    KivyGameAP_GL().run()

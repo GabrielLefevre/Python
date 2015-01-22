@@ -13,21 +13,15 @@
         Button:
             text: 'Change Color'
             on_press: zoneJeu.changeColor()
-        Button:
-            text: 'Afficher Chemin'
-            on_press: zoneJeu.affMeilleurChemin()
         Label:
             text: zoneJeu.bestScore
         Label:
             text: zoneJeu.score
-        Button:
-			text: 'Afficher graphe'
-			on_press: zoneJeu.affGraph()
 
 <GeneralOptions@GridLayout>:
     height:"30dp"
     size_hint_y:None
-    cols:6
+    cols:4
     rows:1
 
 <Case2>:
