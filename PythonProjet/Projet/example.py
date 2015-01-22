@@ -48,7 +48,7 @@ class ZoneJeu(Widget):
             for i in range(self.gridSize[0]):#X
                 tmp = []
                 for j in range(self.gridSize[1]):#Y
-                    tmp.append(Case2(self.colorGrid,pos=[i*41+30,j*41+50],size=[40,40]))
+                    tmp.append(Case2(self.colorGrid,pos=[i*41+30,j*41+50],size=[39,39]))
                 self.cases.append(tmp)
             self.generateGraph()
             self.getLengthPath()
