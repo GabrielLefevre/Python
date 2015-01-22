@@ -18,12 +18,12 @@ global aleay
 
 Builder.load_file("example.kv");
 
-class ZoneJeu(Widget):
+class ZoneJeu(Widget): 
     G = False
     path = False
     bestScore=ObjectProperty("0")
     score=ObjectProperty("0")
-    gridSize = [18,13]
+    gridSize = [13,13]
     def __init__(self,**kwargs):
         super(ZoneJeu,self).__init__(**kwargs)
         self.cases = []
@@ -42,8 +42,8 @@ class ZoneJeu(Widget):
             self.cases = []
             global aleax
             global aleay
-            aleax= randint(0,self.size[0])
-            aleay= randint(0,self.size[1])
+            aleax = randint(0, self.size[0])
+            aleay = randint(0, self.size[1])
             self.colorAlea()
             for i in range(self.gridSize[0]):#X
                 tmp = []
@@ -56,6 +56,7 @@ class ZoneJeu(Widget):
         self.colorGrid = (random()/2.0,random()/2.0)
 
     def changeColor(self):
+        # Change la couleur du graphe
         self.colorAlea()
         for i in self.cases:
             for j in i:
@@ -65,6 +66,7 @@ class ZoneJeu(Widget):
         self.affPath()
         
     def getLengthPath(self):
+        # Permet de recuprer davoir le chemin de lutilisateur
         length=0.0
         if(len(self.path)<2):
             return 0;
@@ -73,7 +75,8 @@ class ZoneJeu(Widget):
             length += self.G[self.path[i-1]][self.path[i]]['weight']
         return int(length*2550)
                 
-    def generateGraph(self):
+    def generateGraph(self): 
+        #Creation du graphe de notre jeu et creation du chemin optimal avec Dijkstra
         self.casesPath =[]
         self.G=nx.Graph()       
         for i in range(self.gridSize[0]):#X
@@ -91,23 +94,27 @@ class ZoneJeu(Widget):
                     self.G.add_edge((i,j),(i,j+1),weight=self.cases[i][j].getWeight(self.cases[i][j+1]))
                     
         self.bestPath=nx.dijkstra_path(self.G,source=(0,self.gridSize[1]-1),target=(self.gridSize[0]-1,0))
-        self.bestScore="Best : "+str(int(nx.dijkstra_path_length(self.G,source=(0,self.gridSize[1]-1),target=(self.gridSize[0]-1,0))*2550))
+        self.bestScore="Meilleur score: "+str(int(nx.dijkstra_path_length(self.G,source=(0,self.gridSize[1]-1),target=(self.gridSize[0]-1,0))*2550))
+    
     def affMeilleurChemin(self):
+        #permet d avoir le meilleur chemin 
         self.solution = True
         for c in self.bestPath:
-            self.cases[c[0]][c[1]].setColor(1,0,0)
+            self.cases[c[0]][c[1]].setColor(1,1,1)
             
     def affPath(self):
+        # affiche le chemin de l utilisateur
         for c in self.path:
             self.cases[c[0]][c[1]].setColor(0,1,0)
             
         
     def affGraph(self):
+        # affiche le graphe de matplolib
         nx.draw(self.G)
         plt.show()
         
     def addOnPath(self,x,y):
-        
+        # permet dajouter un noeud au chemin de lutilisateur
         if((x,y) in self.path):
             return;
         
@@ -127,6 +134,7 @@ class ZoneJeu(Widget):
         
             
     def clickOnCase(self,x,y):
+        # evenement du clique sur un case
         pos=[0,0];
         pos[0]=int((x-30)/41);
         pos[1]=int((y-50)/41);
@@ -141,7 +149,7 @@ class ZoneJeu(Widget):
         self.addOnPath(pos[0],pos[1])
 
                 
-                
+    # evenement des cliques
     def on_touch_move(self, touch):
         self.clickOnCase(touch.x,touch.y)
     def on_touch_down(self, touch):
