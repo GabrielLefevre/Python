@@ -56,14 +56,15 @@ class ZoneJeu(Widget):
         self.colorGrid = (random()/2.0,random()/2.0)
 
     def changeColor(self):
-        # Change la couleur du graphe
-        self.colorAlea()
-        for i in self.cases:
-            for j in i:
-                j.update(self.colorGrid)
-        if (self.solution):
-            self.affMeilleurChemin()
-        self.affPath()
+        if len(self.cases) > 0:
+            # Change la couleur du graphe
+            self.colorAlea()
+            for i in self.cases:
+                for j in i:
+                    j.update(self.colorGrid)
+            if (self.solution):
+                self.affMeilleurChemin()
+            self.affPath()
         
     def getLengthPath(self):
         # Permet de recuprer davoir le chemin de lutilisateur
@@ -97,10 +98,11 @@ class ZoneJeu(Widget):
         self.bestScore="Meilleur score: "+str(int(nx.dijkstra_path_length(self.G,source=(0,self.gridSize[1]-1),target=(self.gridSize[0]-1,0))*2550))
     
     def affMeilleurChemin(self):
-        #permet d avoir le meilleur chemin 
-        self.solution = True
-        for c in self.bestPath:
-            self.cases[c[0]][c[1]].setColor(1,1,1)
+        if len(self.cases) > 0:
+            #permet d avoir le meilleur chemin 
+            self.solution = True
+            for c in self.bestPath:
+                self.cases[c[0]][c[1]].setColor(1,1,1)
             
     def affPath(self):
         # affiche le chemin de l utilisateur
@@ -110,8 +112,9 @@ class ZoneJeu(Widget):
         
     def affGraph(self):
         # affiche le graphe de matplolib
-        nx.draw(self.G)
-        plt.show()
+        if len(self.cases) > 0:
+            nx.draw(self.G)
+            plt.show()
         
     def addOnPath(self,x,y):
         # permet dajouter un noeud au chemin de lutilisateur
